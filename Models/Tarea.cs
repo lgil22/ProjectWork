@@ -19,26 +19,29 @@ namespace Proyecto.Models
 
         public string Descripicion { get; set; }
 
-        [ForeignKey("ProyectoId")]
+        public int TareaId { get; set; }
+        public string DesTarea { get; set; }
 
-        //public virtual TareaDetalle TareaDetalle { get; set; }
-        public virtual List<TareaDetalle> Detalle { get; set; } = new List<TareaDetalle>();
+        [ForeignKey("ProyectoId")]
+        public virtual List<TareaDetalle> TareaDetalle { get; set; }
+
 
         public Tarea()
         {
             ProyectoId = 0;
+            TareaId = 0;
             Fecha = DateTime.Now;
             Descripicion = string.Empty;
 
         }
 
-      /*  public Tarea(int proyectoId, DateTime fecha, string descripicion, TareaDetalle tareaDetalle, List<TareaDetalle> detalle)
-        {
-            ProyectoId = proyectoId;
-            Fecha = fecha;
-            Descripicion = descripicion;
-            TareaDetalle = tareaDetalle;
-            Detalle = detalle;
-        }*/
+        /*  public Tarea(int proyectoId, DateTime fecha, string descripicion, TareaDetalle tareaDetalle, List<TareaDetalle> detalle)
+          {
+              ProyectoId = proyectoId;
+              Fecha = fecha;
+              Descripicion = descripicion;
+              TareaDetalle = tareaDetalle;
+              Detalle = detalle;
+          }*/
     }
 }

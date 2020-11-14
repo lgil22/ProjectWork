@@ -14,14 +14,11 @@ namespace Proyecto.Models
         [Key]
         public int TareaId { get; set; }
         public string DesTarea { get; set; }
-        public virtual List<TareaDetalle> Detalle { get; set; } = new List<TareaDetalle>();
 
-        public TipoTarea()
-        {
-            TareaId = 0;
-            DesTarea = string.Empty;
+        public string Requerimiento { get; set; }
 
-        }
+        public double Tiempo { get; set; }
+
 
     }
 

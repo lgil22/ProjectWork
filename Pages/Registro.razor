@@ -1,4 +1,5 @@
 ﻿@page "/Registro de Proyectos"
+@page "/tarea/{ProyectoId:int}"
 @using Models
 @using BLL
 
@@ -38,7 +39,7 @@
 
             <div class="form-group">
                 <label>Descripción del Proyecto </label>
-                <textarea @bind-="tarea.Descripcion" class="form-control" />
+                <textarea @bind="tarea.Descripicion" class="form-control" />
                 <ValidationMessage For="@(() => tarea.Descripicion)" row="5" placeholder="Descripcion" />
             </div>
 
@@ -56,19 +57,22 @@
 
                             </tr>
                         </thead>
+
                         <tbody style="background-color: #FFFFFF;">
                             @foreach (var item in tarea.TareaDetalle)
                             {
                                 <tr>
                                     <td>@item.TareaId</td>
-                                    <td>@item.Tarea.DesTarea.ToString("N2")</td>
-                                    <td>@item.Tarea.Requerimiento.ToString("N2")</td>
-                                    <td>@item.Tarea.Tiempo.ToString("N2")</td>
+                                    <td>@item.DesTarea</td>
+                                    <td>@item.Requerimiento</td>
+                                    <td>@item.Tiempo</td>
+                                    <td><button>type="button" class="btn btn-success">Agregar</button> </td>
 
                                 </tr>
                             }
                         </tbody>
                     </table>
+
                 </div>
             </div>
 
@@ -86,7 +90,6 @@
             </div>
         </div>
 
-
     </section>
 
 
@@ -94,33 +97,52 @@
 </EditForm>
 
 @code{
-    Tarea tarea = new Tarea();
-    List<Tarea> TareaList = new List<Tarea>();
-    List<TareaDetalle> TareaDetList = new List<TareaDetalle>();
+
     [Parameter]
-    public int id { get; set; }
+    public int ProyectoId { get; set; }
+    Tarea tarea = new Tarea();
+    //List<Tarea> TareaList = new List<Tarea>();
+    //  List<TareaDetalle> TareaDetList = new List<TareaDetalle>();
+    //[Parameter]
+    //  public int id { get; set; }
 
     protected override void OnInitialized()
     {
         Nuevo();
-        TareaList = TareaBLL.GetList(c => true);
-        TareaDetList = new List<TareaDetalle>();
-        Tarea Aux;
-        if (id > 0)
+        if (ProyectoId > 0)
         {
-            Aux = TareaBLL.Buscar(id);
-            if (Aux != null)
-                tarea = Aux;
+            var _tarea = TareaBLL.Buscar(ProyectoId);
+            if (_tarea != null)
+                this.tarea = _tarea;
             else
-                Toast.ShowInfo("No encontrado..");
+                toast.ShowWarning("No encontrado.");
         }
+
     }
 
     private void Nuevo()
     {
+
         tarea = new Tarea();
+        ///     List<!Tarea> lista = TareaBLL.GetList(c => true);
+        //TareaDetList = new List<TareaDetalle>();
+        tarea.Fecha = DateTime.Now;
     }
 
+    private void Agregar()
+    {
+
+        this.tarea.TareaDetalle.Add(new TareaDetalle
+        {
+            TareaDetalleId = 0,
+            TareaId = 0,
+            // DesTarea=string,
+            //Requerimiento=,
+            Tiempo = 1,
+
+        });
+
+    }
 
     private void Guardar()
     {
