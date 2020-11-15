@@ -16,24 +16,25 @@
             </div>
 
             <div class="card-body">
-                <div class="form-group">
-                    <label>ID</label>
-                    <div class="input-group">
-                        <InputNumber @bind-Value="tarea.ProyectoId" class="form-control" />
-                        <ValidationMessage For="(() => tarea.ProyectoId)"></ValidationMessage>
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
+                
+                    <div class="form-group">
+                        <label>ID</label>
+                        <div class="input-group">
+                            <InputNumber @bind-Value="tarea.ProyectoId" class="form-control" />
+                            <ValidationMessage For="(() => tarea.ProyectoId)"></ValidationMessage>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group col-6">
-                    <label>Fecha</label>
-                    <div class="input-group">
-                        <InputDate @bind-Value="tarea.Fecha" class="form-control" />
-                        <ValidationMessage For="@(() => tarea.Fecha)" />
+                    <div class="form-group col-6">
+                        <label>Fecha</label>
+                        <div class="input-group">
+                            <InputDate @bind-Value="tarea.Fecha" class="form-control" />
+                            <ValidationMessage For="@(() => tarea.Fecha)" />
+                        </div>
                     </div>
-                </div>
             </div>
 
 
@@ -45,6 +46,32 @@
 
             <div class="form-group">
                 <label>Detalle de tareas a realizar</label>
+
+                <div class="form-group">
+                    <label>Tipo de Tarea</label>
+                    <div class="input-group">
+                        <select class="form-control col-5" @bind="tarea.TareaId" @onclick="Get">
+                            @foreach (var item in listaTareas)
+                            {
+                                <option value="@item.TareaId">@item.TareaId</option>
+                            }
+                        </select>
+                        <ValidationMessage For="@(() => tarea.TareaId)" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Requerimiento de la tarea</label>
+                    <InputText @bind-Value="tarea.DesTarea" class="form-control col-5" />
+                    <ValidationMessage For="@(() => tarea.DesTarea)" />
+                </div>
+
+                <div class="form-group">
+                    <label>Tiempo (minutos)</label>
+                    <InputText @bind-Value="tarea.Tiempo" class="form-control col-5" />
+                    <ValidationMessage For="@(() => tarea.Tiempo)" />
+                </div>
+
 
                 <div class="table-responsive text-nowrap" style="position: relative; overflow: auto; display: block;">
                     <table class="table table-striped">
@@ -99,12 +126,18 @@
 @code{
 
     [Parameter]
+
     public int ProyectoId { get; set; }
+
     Tarea tarea = new Tarea();
-    //List<Tarea> TareaList = new List<Tarea>();
-    //  List<TareaDetalle> TareaDetList = new List<TareaDetalle>();
-    //[Parameter]
-    //  public int id { get; set; }
+
+    Contexto contexto = new Contexto();
+    List<Tarea> listaTareas = new List<Tarea>();
+    List<TipoTarea> listTipoTareas = new List<TipoTarea>();
+
+    public string DesTarea_ { get; set; }
+    public string Requerimiento_ { get; set; }
+    public double Tiempo_ { get; set; }
 
     protected override void OnInitialized()
     {
@@ -117,13 +150,15 @@
             else
                 toast.ShowWarning("No encontrado.");
         }
-
+        listaTareas = TareaBLL.GetList(p => true);
+        listTipoTareas = TipoTareaBLL.GetList(p => true);
     }
 
     private void Nuevo()
     {
 
         tarea = new Tarea();
+
         ///     List<!Tarea> lista = TareaBLL.GetList(c => true);
         //TareaDetList = new List<TareaDetalle>();
         tarea.Fecha = DateTime.Now;
@@ -136,11 +171,25 @@
         {
             TareaDetalleId = 0,
             TareaId = 0,
-            // DesTarea=string,
-            //Requerimiento=,
-            Tiempo = 1,
+            DesTarea= DesTarea_,
+            Requerimiento= Requerimiento_,
+            Tiempo = Tiempo_,
 
         });
+
+    }
+
+    private void Get()
+    {
+        var descripcion = TipoTareaBLL.Buscar(tarea.TareaId);
+        var tipo = TareaBLL.Buscar(tarea.TareaId);
+        var requerimiento = TipoTareaBLL.Buscar(tarea.TareaId);
+        if (descripcion != null & tipo != null & requerimiento != null)
+        {
+            _///descripcion = descripcion;
+            DesTarea_ = requerimiento.DesTarea;
+          
+        }
 
     }
 
