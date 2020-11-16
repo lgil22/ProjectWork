@@ -31,14 +31,14 @@ namespace Proyecto.BLL
             return _tipo;
 
         }
-        public static List<TipoTarea> GetList(Expression<Func<TipoTarea, bool>> producto)
+        public static List<TipoTarea> GetList(Expression<Func<TipoTarea, bool>> tarea)
         {
             List<TipoTarea> lista = new List<TipoTarea>();
             Contexto db = new Contexto();
 
             try
             {
-                lista = db.TipoTarea.Where(producto).ToList();
+                lista = db.TipoTarea.Where(tarea).ToList();
             }
             catch (Exception)
             {

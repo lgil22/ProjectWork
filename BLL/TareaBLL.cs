@@ -13,7 +13,7 @@ namespace Proyecto.BLL
     {
         public static bool Guardar(Tarea tarea)
         {
-            if (!Existe(tarea.ProyectoId))//si no existe insertamos
+            if (!Existe(tarea.ProyectoId))
                 return Insertar(tarea);
             else
                 return Modificar(tarea);
@@ -59,8 +59,7 @@ namespace Proyecto.BLL
             Contexto contexto = new Contexto();
 
             try
-            {
-                //aqui borro del detalle y disminuyo 
+            { 
                 foreach (var item in Anterior.TareaDetalle)
                 {
                     var auxTarea = contexto.TipoTarea.Find(item.TareaId);
@@ -74,7 +73,6 @@ namespace Proyecto.BLL
 
                 }
 
-                //aqui agrego lo nuevo al detalle
                 foreach (var item in tarea.TareaDetalle)
                 {
                     var auxTarea = contexto.TipoTarea.Find(item.TareaId);
@@ -120,8 +118,6 @@ namespace Proyecto.BLL
                         var auxTarea = contexto.TipoTarea.Find(item.TareaId);
 
                     }
-
-                    //aqui remueve la entidad
                     var _tarea = contexto.Tareas.Find(id);
                     if (_tarea != null)
                     {
