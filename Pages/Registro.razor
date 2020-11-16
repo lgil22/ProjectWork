@@ -66,9 +66,10 @@
                     <ValidationMessage For="@(() => tarea.DesTarea)" />
                 </div>
 
+
                 <div class="form-group">
                     <label>Tiempo (minutos)</label>
-                    <InputText @bind-Value="tarea.Tiempo" class="form-control col-5" />
+                    <InputText @bind-Value="tarea.Tempo" class="form-control col-5" />
                     <ValidationMessage For="@(() => tarea.Tiempo)" />
                 </div>
 
@@ -81,6 +82,7 @@
                                 <th>Tipo Tarea</th>
                                 <th>Requerimiento</th>
                                 <th>Tiempo</th>
+                              <th> <button type="button" class="btn btn-info" @onclick="Agregar">Agregar</button> </th>  
 
                             </tr>
                         </thead>
@@ -150,6 +152,7 @@
             else
                 toast.ShowWarning("No encontrado.");
         }
+
         listaTareas = TareaBLL.GetList(p => true);
         listTipoTareas = TipoTareaBLL.GetList(p => true);
     }
@@ -186,9 +189,9 @@
         var requerimiento = TipoTareaBLL.Buscar(tarea.TareaId);
         if (descripcion != null & tipo != null & requerimiento != null)
         {
-            _///descripcion = descripcion;
+            ///descripcion = descripcion;
             DesTarea_ = requerimiento.DesTarea;
-          
+
         }
 
     }

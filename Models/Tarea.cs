@@ -22,6 +22,7 @@ namespace Proyecto.Models
         public int TareaId { get; set; }
         public string DesTarea { get; set; }
 
+
         [ForeignKey("ProyectoId")]
         public virtual List<TareaDetalle> TareaDetalle { get; set; }
 
