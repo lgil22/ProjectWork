@@ -18,7 +18,7 @@
             <div class="form-row">
                 <div class="col">
                     <label>FILTRO:</label>
-                    <select class="form-control" @bind="filtroSeleccionado">
+                    <select class="form-control" @bind="Seleccion">
                         <option value="1">Todos</option>
                         <option value="2">ID</option>
                         <option value="3">Tipo Tarea</option>
@@ -69,7 +69,7 @@
 
     [Parameter]
 
-    public int filtroSeleccionado { get; set; }
+    public int Seleccion { get; set; }
     private string criterio { get; set; }
 
     public List<Tarea> lista = new List<Tarea>();
@@ -78,7 +78,7 @@
 
     private void Consultar()
     {
-        switch (filtroSeleccionado)
+        switch (Seleccion)
         {
             case 0: //Todos
                 this.lista = TareaBLL.GetList(p => true);
