@@ -11,28 +11,31 @@ namespace Proyecto.Models
     public class Tarea
     {
         [Key]
-        public int ProyectoId { get; set; }
+        public int TareaId { get; set; }
         [DataType(DataType.DateTime)]
         [Required(ErrorMessage = "El campo fecha no puede estar vacío.")]
         [DisplayFormat(DataFormatString = "{0:dd,mm, yyyy}")]
         public DateTime Fecha { get; set; }
 
-        public string Descripicion { get; set; }
+        public string Descripcion { get; set; }
 
-        public int TareaId { get; set; }
-        public string DesTarea { get; set; }
+        public string Requerimiento { get; set; }
+
+        public double TiempoTotal { get; set; }
 
 
-        [ForeignKey("ProyectoId")]
-        public virtual List<TareaDetalle> TareaDetalle { get; set; }
+        [ForeignKey("TareaId")]
+        public virtual List<TareaDetalle> Detalle { get; set; }
 
 
         public Tarea()
         {
-            ProyectoId = 0;
             TareaId = 0;
             Fecha = DateTime.Now;
-            Descripicion = string.Empty;
+            Descripcion = string.Empty;
+            Requerimiento = string.Empty;
+            TiempoTotal = 0;
+            Detalle = new List<TareaDetalle>();
 
         }
 

@@ -1,0 +1,296 @@
+﻿@page "/Registro"
+
+@using Proyecto.BLL
+@using Proyecto.Models
+
+@inject IToastService toast
+
+
+<EditForm Model="tarea" OnValidSubmit="Guardar">
+<DataAnnotationsValidator />
+
+<section class="form-register">
+    <div class="card">
+
+        <div class="card-header">
+            <h3>Registro de Proyectos</h3>
+        </div>
+
+        <div class="card-body">
+            <form>
+                <div class="form-row align-items-center">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Proyecto Id:</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="tarea.TareaId" class="form-control col-4" />
+                                <ValidationMessage For="(() => tarea.TareaId)"></ValidationMessage>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*Fecha*@
+                <div class="form-group">
+                    <label>FECHA:</label>
+                    <InputDate @bind-Value="tarea.Fecha" class="form-control" />
+                    <ValidationMessage For="@(() => tarea.Fecha)" />
+                </div>
+
+                @*Descripcion*@
+                <div class="form-group">
+                    <label>DESCRIPCION:</label>
+                    <InputText @bind-Value="tarea.Descripcion" class="form-control" />
+                    <ValidationMessage For="@(() => tarea.Descripcion)" placeholder="Descripcion" />
+                </div>
+
+                <div class="form-group">
+                    <label>Detalle de tareas a realizar</label>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
+
+                        @*Tipo tarea*@
+                        <div class="col">
+                            <label>TIPO DE TAREA:</label>
+                            <select class="form-control" @bind="tareaSeleccionada">
+                                @foreach (var item in listaTiposTareas)
+                                {
+                                    <option value="@item.TipoTareaId">@item.DesTarea</option>
+                                }
+                            </select>
+                        </div>
+
+                        @*Requirimiento*@
+                    <div class="col">
+                        <label>REQUIRIMIENTO:</label>
+                        <InputText class="form-control" @bind-Value="tarea.Requerimiento" />
+                        <ValidationMessage For="@(() => tarea.Requerimiento)"/>
+                    </div>
+
+                        @*TIEMPO*@
+                        <div class="col">
+                            <label>TIEMPO (minutos):</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="tiempo" class="form-control" />
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-info" @onclick="Agregar">Agregar</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+                @*Detalle*@
+                <div class="table-responsive text-nowrap" style="position: relative; overflow: auto; display: block;">
+                    <table class="table table-striped">
+                        <thead style="background-color: #A9A9A9;">
+                            <tr>
+                                <th>ID</th>
+                                <th>Tipo Tarea</th>
+                                <th>Requerimiento</th>
+                                <th>Tiempo</th>
+                            </tr>
+                        </thead>
+
+                        <tbody style="background-color: #FFFFFF;">
+                            @foreach (var item in tarea.Detalle)
+                            {
+                            <tr>
+                                <td>@item.TareaId</td>
+                                <td>@item.TipoTareaId</td>
+                                <td>@item.Requerimiento</td>
+                                <td>@item.Tiempo</td>
+                                <td><button type="button" class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+       
+
+        @*Total*@
+        <div class="form-group">
+            <label>TIEMPO TOTAL:</label>
+            <InputNumber @bind-Value="tarea.TiempoTotal" class="form-control" readonly="true" />
+            <ValidationMessage For="@(() => tarea.TiempoTotal)" />
+        </div>
+
+        </form>
+    </div>
+
+        <div class="card-footer">
+            <div class="form-group text-center" display: inline-block>
+                <button type="button" class="btn btn-lg btn-secondary" @onclick="Nuevo">Nuevo</button>
+                <button type="submit" class="btn btn-lg btn-success">Guardar</button>
+                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">Eliminar</button>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+</EditForm>
+
+
+@code {
+
+    Tarea tarea = new Tarea();
+    List<TipoTarea> listaTiposTareas = new List<TipoTarea>();
+    private string requerimiento { get; set; }
+    private double tiempo { get; set; }
+    private int tareaSeleccionada { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        listaTiposTareas = TipoTareaBLL.GetList(t => true);
+    }
+
+    private void Nuevo()
+    {
+        tarea = new Tarea();
+        requerimiento = string.Empty;
+        tiempo = 0;
+        tareaSeleccionada = 0;
+    }
+
+    private string GetNombreTarea(int id)
+    {
+        var aux = TipoTareaBLL.Buscar(id);
+        if (aux != null)
+            return aux.DesTarea;
+        else
+            return "No encontrado..";
+    }
+
+    private void EliminarTareaDetalle(TareaDetalle detalle)
+    {
+        try
+        {
+            tarea.Detalle.Remove(detalle);
+            CalcularTiempo();
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void CalcularTiempo()
+    {
+        double total = 0;
+        foreach (var item in tarea.Detalle)
+        {
+            total += item.Tiempo;
+        }
+        tarea.TiempoTotal = total;
+    }
+
+    private void EliminarDetalle(TareaDetalle detalle)
+    {
+        try
+        {
+            tarea.Detalle.Remove(detalle);
+            CalcularTiempo();
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void Buscar()
+    {
+        var encontrado = TareaBLL.Buscar(tarea.TareaId);
+        if (encontrado != null)
+        {
+            this.tarea = encontrado;
+        }
+        else
+            toast.ShowWarning("No encontrado");
+    }
+
+    private void Guardar()
+    {
+        bool paso;
+        if (tarea.Detalle.Count() == 0)
+        {
+            toast.ShowWarning("Agrega una tarea", "Lista Vacía!");
+            return;
+        }
+        else
+        {
+            paso = TareaBLL.Guardar(tarea);
+
+            if (paso)
+            {
+                Nuevo();
+                toast.ShowSuccess("Guardado correctamente");
+            }
+            else
+            {
+                toast.ShowError("No fue posible guardar");
+            }
+        }
+    }
+
+    private void Eliminar()
+    {
+        bool elimino;
+
+        elimino = TareaBLL.Eliminar(tarea.TareaId);
+
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Eliminado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
+    }
+
+    private void Agregar()
+    {
+        if (tareaSeleccionada == 0)
+        {
+            toast.ShowWarning("Tiene que seleccionar una tarea.");
+            return;
+        }
+
+        if (tiempo <= 0)
+        {
+            toast.ShowWarning("La cantidad debe ser mayor a 0.");
+            return;
+        }
+        else
+        {
+            this.tarea.Detalle.Add(new TareaDetalle
+            {
+                TareaDetalleId = 0,
+                TareaId =tarea.TareaId,
+                TipoTareaId = tareaSeleccionada,
+                Requerimiento = tarea.Requerimiento,
+                Tiempo = tiempo
+
+            });
+
+            tareaSeleccionada = 0;
+            tiempo = 0;
+
+
+        }
+        CalcularTiempo();
+
+    }
+}

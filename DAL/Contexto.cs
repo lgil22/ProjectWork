@@ -14,18 +14,18 @@ namespace Proyecto.DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(@"Data source = Data\\Tarea.db"); ;
+            optionsBuilder.UseSqlite(@"Data source = Data\Tarea.db"); ;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TipoTarea>().HasData(new TipoTarea() { TareaId = 1, DesTarea = "Analisis" });
+            modelBuilder.Entity<TipoTarea>().HasData(new TipoTarea() { TipoTareaId = 1, DesTarea = "Analisis" });
 
-            modelBuilder.Entity<TipoTarea>().HasData(new TipoTarea() { TareaId = 2, DesTarea = "Diseño" });
+            modelBuilder.Entity<TipoTarea>().HasData(new TipoTarea() { TipoTareaId = 2, DesTarea = "Diseño" });
 
-            modelBuilder.Entity<TipoTarea>().HasData(new TipoTarea() { TareaId = 3, DesTarea = "Programación" });
+            modelBuilder.Entity<TipoTarea>().HasData(new TipoTarea() { TipoTareaId = 3, DesTarea = "Programación" });
 
-            modelBuilder.Entity<TipoTarea>().HasData(new TipoTarea() { TareaId = 4, DesTarea = "Prueba" });
+            modelBuilder.Entity<TipoTarea>().HasData(new TipoTarea() { TipoTareaId = 4, DesTarea = "Prueba" });
 
         }
     }

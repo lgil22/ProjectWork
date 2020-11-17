@@ -12,13 +12,8 @@ namespace Proyecto.Models
     public class TipoTarea
     {
         [Key]
-        public int TareaId { get; set; }
+        public int TipoTareaId { get; set; }
         public string DesTarea { get; set; }
-
-        public string Requerimiento { get; set; }
-
-        public double Tiempo { get; set; }
-
 
     }
 

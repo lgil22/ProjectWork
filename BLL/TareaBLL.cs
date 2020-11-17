@@ -13,7 +13,7 @@ namespace Proyecto.BLL
     {
         public static bool Guardar(Tarea tarea)
         {
-            if (!Existe(tarea.ProyectoId))
+            if (!Existe(tarea.TareaId))
                 return Insertar(tarea);
             else
                 return Modificar(tarea);
@@ -27,13 +27,6 @@ namespace Proyecto.BLL
 
             try
             {
-
-                foreach (var item in tarea.TareaDetalle)
-                {
-
-                    var auxTarea = contexto.TipoTarea.Find(item.TareaId);
-
-                }
 
                 contexto.Tareas.Add(tarea);
                 paso = contexto.SaveChanges() > 0;
@@ -55,27 +48,24 @@ namespace Proyecto.BLL
         private static bool Modificar(Tarea tarea)
         {
             bool paso = false;
-            var Anterior = Buscar(tarea.ProyectoId);
+            var Anterior = Buscar(tarea.TareaId);
             Contexto contexto = new Contexto();
 
             try
             { 
-                foreach (var item in Anterior.TareaDetalle)
+                foreach (var item in Anterior.Detalle)
                 {
                     var auxTarea = contexto.TipoTarea.Find(item.TareaId);
-                    if (!tarea.TareaDetalle.Exists(d => d.TareaDetalleId == item.TareaDetalleId))
+                    if (!tarea.Detalle.Exists(d => d.TareaDetalleId == item.TareaDetalleId))
                     {
                         if (auxTarea != null)
-
-
                             contexto.Entry(item).State = EntityState.Deleted;
                     }
 
                 }
 
-                foreach (var item in tarea.TareaDetalle)
+                foreach (var item in tarea.Detalle)
                 {
-                    var auxTarea = contexto.TipoTarea.Find(item.TareaId);
                     if (item.TareaDetalleId == 0)
                     {
                         contexto.Entry(item).State = EntityState.Added;
@@ -105,19 +95,12 @@ namespace Proyecto.BLL
         public static bool Eliminar(int id)
         {
             bool paso = false;
-            var Anterior = Buscar(id);
             Contexto contexto = new Contexto();
 
             try
             {
                 if (Existe(id))
                 {
-
-                    foreach (var item in Anterior.TareaDetalle)
-                    {
-                        var auxTarea = contexto.TipoTarea.Find(item.TareaId);
-
-                    }
                     var _tarea = contexto.Tareas.Find(id);
                     if (_tarea != null)
                     {
@@ -145,7 +128,7 @@ namespace Proyecto.BLL
 
             try
             {
-                tarea = contexto.Tareas.Where(x => x.ProyectoId == id).Include(d => d.TareaDetalle).FirstOrDefault();
+                tarea = contexto.Tareas.Where(x => x.TareaId == id).Include(d => d.Detalle).FirstOrDefault();
             }
             catch (Exception)
             {
@@ -189,7 +172,7 @@ namespace Proyecto.BLL
 
             try
             {
-                encontrado = contexto.Tareas.Any(o => o.ProyectoId == id);
+                encontrado = contexto.Tareas.Any(o => o.TareaId == id);
 
             }
             catch (Exception)

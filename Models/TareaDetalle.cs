@@ -15,20 +15,20 @@ namespace Proyecto.Models
         [Key]
         public int TareaDetalleId { get; set; }
         public int TareaId { get; set; }
-        public string DesTarea { get; set; }
+        public int TipoTareaId { get; set; }
+       
         public string Requerimiento { get; set; }
         public double Tiempo { get; set; }
-        public int ProyectoId { get; set; }
-        public double TiempoTotal { get; set; }
-
-
+     
+       
         public TareaDetalle()
         {
             TareaDetalleId = 0;
             TareaId = 0;
+            TipoTareaId = 0;
+            Requerimiento = string.Empty;
             Tiempo = 0;
-            TiempoTotal = 0;
-            ProyectoId = 0;
+           
 
         }
     }
