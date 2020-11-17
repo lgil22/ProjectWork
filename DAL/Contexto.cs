@@ -14,7 +14,7 @@ namespace Proyecto.DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(@"Data source = Data\Tarea.db"); ;
+            optionsBuilder.UseSqlite(@"Data source = Data\Tareas.db"); ;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

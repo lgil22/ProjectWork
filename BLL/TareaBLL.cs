@@ -128,7 +128,7 @@ namespace Proyecto.BLL
 
             try
             {
-                tarea = contexto.Tareas.Where(x => x.TareaId == id).Include(d => d.Detalle).FirstOrDefault();
+                tarea = contexto.Tareas.Where(t => t.TareaId == id).Include(r => r.Detalle).FirstOrDefault();
             }
             catch (Exception)
             {

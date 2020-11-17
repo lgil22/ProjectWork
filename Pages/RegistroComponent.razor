@@ -105,7 +105,7 @@
                             {
                             <tr>
                                 <td>@item.TareaId</td>
-                                <td>@item.TipoTareaId</td>
+                                <td>@GetNombreTarea(item.TipoTareaId)</td>
                                 <td>@item.Requerimiento</td>
                                 <td>@item.Tiempo</td>
                                 <td><button type="button" class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>

@@ -9,8 +9,8 @@ using Proyecto.DAL;
 namespace Proyecto.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20201117020318_Tareas")]
-    partial class Tareas
+    [Migration("20201117065847_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,10 +24,13 @@ namespace Proyecto.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Descripicion")
+                    b.Property<string>("Descripcion")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Requerimiento")
                         .HasColumnType("TEXT");
 
                     b.Property<double>("TiempoTotal")

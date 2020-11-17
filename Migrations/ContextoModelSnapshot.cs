@@ -22,10 +22,13 @@ namespace Proyecto.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Descripicion")
+                    b.Property<string>("Descripcion")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Requerimiento")
                         .HasColumnType("TEXT");
 
                     b.Property<double>("TiempoTotal")

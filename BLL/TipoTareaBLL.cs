@@ -34,11 +34,11 @@ namespace Proyecto.BLL
         public static List<TipoTarea> GetList(Expression<Func<TipoTarea, bool>> tarea)
         {
             List<TipoTarea> lista = new List<TipoTarea>();
-            Contexto db = new Contexto();
+            Contexto contexto = new Contexto();
 
             try
             {
-                lista = db.TipoTarea.Where(tarea).ToList();
+                lista = contexto.TipoTarea.Where(tarea).ToList();
             }
             catch (Exception)
             {
@@ -47,7 +47,7 @@ namespace Proyecto.BLL
             }
             finally
             {
-                db.Dispose();
+                contexto.Dispose();
             }
 
             return lista;
